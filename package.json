@@ -1,0 +1,28 @@
+{
+  "name": "mpc-kdf",
+  "version": "1.0.0",
+  "description": "",
+  "source": "src/index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "keccak": "^3.0.4",
+    "elliptic": "^6.5.4",
+    "hash.js": "^1.1.7",
+    "bn.js": "^5.2.1",
+    "bs58check": "^3.0.1",
+    "near-api-js": "^3.0.2"
+  },
+  "devDependencies": {
+    "buffer": "^5.5.0||^6.0.0",
+    "events": "^3.1.0",
+    "parcel": "^2.11.0",
+    "process": "^0.11.10",
+    "typescript": "^5.3.3"
+  }
+}
