@@ -99,7 +99,7 @@ async function generateEthereumAddress({
 	path,
 }) {
 	const childPublicKey = await deriveChildPublicKey(
-		publicKey,
+		najPublicKeyStrToUncompressedHexPoint(publicKey),
 		accountId,
 		path,
 	)
@@ -124,7 +124,7 @@ export async function handleMessage(event) {
 // testing locally
 handleMessage({
 	data: {
-		publicKey:`secp256k1:4HFcTSodRLVCGNVcGc4Mf2fwBBBxv9jxkGdiW2S2CA1y6UpVVRWKj6RX7d7TDt65k2Bj3w9FU4BGtt43ZvuhCnNt`,
+		publicKey:`secp256k1:37aFybhUHCxRdDkuCcB3yHzxqK7N8EQ745MujyAQohXSsYymVeHzhLxKvZ2qYeRHf3pGFiAsxqFJZjpF9gP2JV5u`,
 		accountId: `md1.testnet`,
 		path: `,ethereum,1`,
 		debug: true,
