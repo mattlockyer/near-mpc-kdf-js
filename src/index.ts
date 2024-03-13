@@ -6,7 +6,7 @@ import hash from 'hash.js';
 import bs58check from 'bs58check';
 
 function najPublicKeyStrToUncompressedHexPoint(najPublicKeyStr) {
-  return '04' + Buffer.from(base_decode(najPublicKeyStr.split(':')[1])).toString('hex')
+  return '04' + Buffer.from(base_decode(najPublicKeyStr.split(':')[1])).toString('hex');
 }
 
 async function sha256Hash(str) {
@@ -51,8 +51,8 @@ async function deriveChildPublicKey(
   const newPublicKeyPoint = oldPublicKeyPoint.add(scalarTimesG);
 
   return '04' + (
-    newPublicKeyPoint.getX().toString('hex') +
-    newPublicKeyPoint.getY().toString('hex')
+    newPublicKeyPoint.getX().toString('hex').padStart(64, '0') +
+    newPublicKeyPoint.getY().toString('hex').padStart(64, '0')
   );
 }
 
@@ -93,18 +93,18 @@ async function uncompressedHexPointToBtcAddress(publicKeyHex) {
   return address;
 }
 
-async function generateEthereumAddress({
+async function generateAddress({
 	publicKey,
 	accountId,
 	path,
+  chain,
 }) {
 	const childPublicKey = await deriveChildPublicKey(
 		najPublicKeyStrToUncompressedHexPoint(publicKey),
 		accountId,
 		path,
 	)
-	const evmAddress = uncompressedHexPointToEvmAddress(childPublicKey)
-	return evmAddress
+  return chain === 'bitcoin' ? uncompressedHexPointToBtcAddress(childPublicKey) : uncompressedHexPointToEvmAddress(childPublicKey)
 }
 
 export async function handleMessage(event) {
@@ -112,9 +112,9 @@ export async function handleMessage(event) {
 	if (!data.publicKey || !data.accountId || !data.path) return
 	console.log("KDF args", data)
 	if (data.debug) {
-		return console.log('Ethereum Address', await generateEthereumAddress(data))
+		return console.log('DEBUG OUTPUT', 'Ethereum Address', await generateAddress(data))
 	}
-	const address = await generateEthereumAddress(data)
+  const address = await generateAddress(data)
   console.log('address', address)
 	window.top.postMessage({
 		address
@@ -122,14 +122,14 @@ export async function handleMessage(event) {
 }
 
 // testing locally
-handleMessage({
-	data: {
-		publicKey:`secp256k1:37aFybhUHCxRdDkuCcB3yHzxqK7N8EQ745MujyAQohXSsYymVeHzhLxKvZ2qYeRHf3pGFiAsxqFJZjpF9gP2JV5u`,
-		accountId: `md1.testnet`,
-		path: `,ethereum,1`,
-		debug: true,
-	}
-})
+// handleMessage({
+// 	data: {
+// 		publicKey:`secp256k1:4HFcTSodRLVCGNVcGc4Mf2fwBBBxv9jxkGdiW2S2CA1y6UpVVRWKj6RX7d7TDt65k2Bj3w9FU4BGtt43ZvuhCnNt`,
+// 		accountId: `md1.testnet`,
+// 		path: `ethereum,1`,
+// 		debug: true,
+// 	}
+// })
 
 // iframe
 window.top.postMessage({
