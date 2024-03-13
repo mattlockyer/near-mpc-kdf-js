@@ -12,6 +12,8 @@ Use `pnpm install`
 
 Edit the script defaults and generate address 1 time (see console output)
 
+*NOTE* default address generated is for Ethereum unless you specify `chain: 'bitcoin'` in your iframe message.
+
 Or embed as an iframe and use in BOS component like this:
 
 ```js
@@ -19,7 +21,7 @@ Or embed as an iframe and use in BOS component like this:
 const mpcContract = `multichain-testnet-2.testnet`;
 const publicKey = Near.view(mpcContract, "public_key");
 const accountId = "md1.testnet";
-const path = ",ethereum,1";
+const path = ",bitcoin,1";
 
 <iframe
 	src={"https://near-mpc-kdf-iframe.pages.dev/"}
@@ -27,7 +29,7 @@ const path = ",ethereum,1";
 	onMessage={(res) => {
 	if (res.loaded) {
 		State.update({
-		message: { publicKey, accountId, path },
+		message: { publicKey, accountId, path, chain: 'bitcoin' },
 		});
 	}
 	if (res.address) {
