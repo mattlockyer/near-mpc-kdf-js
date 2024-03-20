@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bitcoinjs-lib": "^6.1.5",
     "bn.js": "^5.2.1",
     "bs58check": "^3.0.1",
     "elliptic": "^6.5.4",
